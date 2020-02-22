@@ -1,21 +1,25 @@
 package com.aplication.weather.controller;
 
+import com.aplication.weather.model.Weather;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Map;
-
 @RestController
 public class MainController {
-    @GetMapping("/hello")
-    public String hello(@RequestParam(value = "name", defaultValue = "World") String name) {
-        return String.format("Hello %s!", name);
+
+    @GetMapping("/greeting")
+    public String greeting(@RequestParam(name="name", required=false, defaultValue="World") String name, Model model) {
+        model.addAttribute("name", name);
+        return "greeting";
     }
 
-    @GetMapping
-    public String main(Map<String, Object> model) {
-        model.put("some","Hi!");
-        return "main";
+    @GetMapping("/point1")
+    public Weather someInf() {
+        Weather weather = new Weather();
+        weather.setID(1);
+        weather.setName("TEST name");
+        return weather;
     }
 }
