@@ -1,12 +1,12 @@
 package com.aplication.weather.model.service.pojo.openweather;
 
-
 import com.aplication.weather.model.Weathers;
+import lombok.Data;
 
 import java.util.List;
 
+@Data
 public class OpenWeatherPOJO extends Weathers {
-
     private Coord coord;
     private List<Weather> weather;
     private String base;

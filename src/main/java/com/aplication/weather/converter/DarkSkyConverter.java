@@ -9,12 +9,14 @@ import java.io.IOException;
 
 public class DarkSkyConverter implements WeatherConverter {
 
+    @Override
     public void toJSON(Weathers weather) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.writeValue(new File(baseFile), weather);
     }
 
-    public Weathers toJavaObject(String https)  throws IOException  {
+    @Override
+    public Weathers toJavaObject(String https) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         return mapper.readValue(https, DarkSkyPOJO.class);
     }

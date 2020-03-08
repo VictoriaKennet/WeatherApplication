@@ -9,11 +9,13 @@ import java.io.IOException;
 
 public class OpenWeatherConverter implements WeatherConverter {
 
+    @Override
     public void toJSON(Weathers weather) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.writeValue(new File(baseFile), weather);
     }
 
+    @Override
     public Weathers toJavaObject(String https)  throws IOException  {
         ObjectMapper mapper = new ObjectMapper();
         return mapper.readValue(https, OpenWeatherPOJO.class);
