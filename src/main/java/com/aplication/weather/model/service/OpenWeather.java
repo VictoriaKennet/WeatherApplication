@@ -1,8 +1,8 @@
 package com.aplication.weather.model.service;
 
-import com.aplication.weather.converter.DarkSkyConverter;
+import com.aplication.weather.converter.OpenWeatherConverter;
 import com.aplication.weather.converter.WeatherConverter;
-import com.aplication.weather.model.service.pojo.darksky.DarkSkyPOJO;
+import com.aplication.weather.model.service.pojo.openweather.OpenWeatherPOJO;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -13,20 +13,17 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 
 @Service
-public class DarkSky {
+public class OpenWeather {
 
-    public DarkSkyPOJO getHttpResponse() throws IOException {
+    public OpenWeatherPOJO getHttpResponse() throws IOException {
         HttpClient httpClient = HttpClients.createDefault();
-        String http = "https://api.darksky.net/forecast/dc00ae2f7266f5910da07733e25bc378/50.9216,34.80029";
+        String http = "http://api.openweathermap.org/data/2.5/weather?q=sumy&APPID=e17996a125b9134b4d6191a6491a1049";
         HttpGet httpGet = new HttpGet(http);
         HttpResponse httpResponse = httpClient.execute(httpGet);
-        WeatherConverter weatherConverter = new DarkSkyConverter();
-        DarkSkyPOJO weather = (DarkSkyPOJO) weatherConverter.toJavaObject(EntityUtils.toString(httpResponse.getEntity()));
+        WeatherConverter weatherConverter = new OpenWeatherConverter();
+        OpenWeatherPOJO weather = (OpenWeatherPOJO) weatherConverter.toJavaObject(EntityUtils.toString(httpResponse.getEntity()));
         weatherConverter.toJSON(weather);
         return weather;
     }
-
-
-
 
 }
