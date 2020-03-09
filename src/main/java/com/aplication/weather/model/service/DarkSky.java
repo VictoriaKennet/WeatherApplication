@@ -1,6 +1,7 @@
 package com.aplication.weather.model.service;
 
 import com.aplication.weather.converter.DarkSkyConverter;
+import com.aplication.weather.converter.JsonConverter;
 import com.aplication.weather.converter.WeatherConverter;
 import com.aplication.weather.model.service.pojo.darksky.DarkSkyPOJO;
 import org.apache.http.HttpResponse;
@@ -22,7 +23,7 @@ public class DarkSky {
         HttpResponse httpResponse = httpClient.execute(httpGet);
         WeatherConverter weatherConverter = new DarkSkyConverter();
         DarkSkyPOJO weather = (DarkSkyPOJO) weatherConverter.toJavaObject(EntityUtils.toString(httpResponse.getEntity()));
-        weatherConverter.toJSON(weather);
+        new JsonConverter().toJSON(weather);
         return weather;
     }
 }

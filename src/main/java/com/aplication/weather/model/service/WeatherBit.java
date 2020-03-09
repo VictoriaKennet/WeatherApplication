@@ -1,5 +1,6 @@
 package com.aplication.weather.model.service;
 
+import com.aplication.weather.converter.JsonConverter;
 import com.aplication.weather.converter.WeatherBitConverter;
 import com.aplication.weather.converter.WeatherConverter;
 import com.aplication.weather.model.service.pojo.weatherbit.WeatherBitPOJO;
@@ -20,7 +21,7 @@ public class WeatherBit {
         HttpResponse httpResponse = httpClient.execute(httpGet);
         WeatherConverter weatherConverter = new WeatherBitConverter();
         WeatherBitPOJO weather = (WeatherBitPOJO) weatherConverter.toJavaObject(EntityUtils.toString(httpResponse.getEntity()));
-        weatherConverter.toJSON(weather);
+        new JsonConverter().toJSON(weather);
         return weather;
     }
 }

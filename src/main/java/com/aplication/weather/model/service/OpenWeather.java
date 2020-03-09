@@ -1,5 +1,6 @@
 package com.aplication.weather.model.service;
 
+import com.aplication.weather.converter.JsonConverter;
 import com.aplication.weather.converter.OpenWeatherConverter;
 import com.aplication.weather.converter.WeatherConverter;
 import com.aplication.weather.model.service.pojo.openweather.OpenWeatherPOJO;
@@ -22,7 +23,7 @@ public class OpenWeather {
         HttpResponse httpResponse = httpClient.execute(httpGet);
         WeatherConverter weatherConverter = new OpenWeatherConverter();
         OpenWeatherPOJO weather = (OpenWeatherPOJO) weatherConverter.toJavaObject(EntityUtils.toString(httpResponse.getEntity()));
-        weatherConverter.toJSON(weather);
+        new JsonConverter().toJSON(weather);
         return weather;
     }
 
