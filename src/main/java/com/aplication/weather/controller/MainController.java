@@ -26,7 +26,7 @@ public class MainController {
         return openWeather;
     }
 
-    @GetMapping("/weatheBit")
+    @GetMapping("/weatherBit")
     public WeatherBit weatherBit() throws IOException {
         WeatherBit weatherBit = new WeatherBit();
         weatherBit.getHttpResponse();
