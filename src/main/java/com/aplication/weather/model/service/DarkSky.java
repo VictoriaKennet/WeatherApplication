@@ -3,6 +3,7 @@ package com.aplication.weather.model.service;
 import com.aplication.weather.converter.DarkSkyConverter;
 import com.aplication.weather.converter.JsonConverter;
 import com.aplication.weather.converter.WeatherConverter;
+import com.aplication.weather.model.Weathers;
 import com.aplication.weather.model.service.pojo.darksky.DarkSkyPOJO;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -14,9 +15,10 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 
 @Service
-public class DarkSky {
+public class DarkSky implements WeatherAPI {
 
-    public DarkSkyPOJO getHttpResponse() throws IOException {
+    @Override
+    public Weathers getHttpResponse() throws IOException {
         HttpClient httpClient = HttpClients.createDefault();
         String http = "https://api.darksky.net/forecast/dc00ae2f7266f5910da07733e25bc378/50.9216,34.80029";
         HttpGet httpGet = new HttpGet(http);

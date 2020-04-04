@@ -1,9 +1,9 @@
 package com.aplication.weather.model.service;
 
-import com.aplication.weather.model.service.pojo.openweather.Weather;
+import com.aplication.weather.model.Weathers;
 
 import java.io.IOException;
 
 public interface WeatherAPI {
-    Weather getHttpResponse() throws IOException;
+    Weathers getHttpResponse() throws IOException;
 }

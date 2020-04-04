@@ -11,9 +11,26 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.*;
 
 @RestController
 public class MainController {
+
+    private int numberOfThread = 3;
+    private final List<WeatherAPI> list;
+    private OpenWeather openWeather;
+    private WeatherBit weatherBit;
+    private DarkSky darkSky;
+
+    public MainController(DarkSky darkSky, OpenWeather openWeather, WeatherBit weatherBit) {
+        list = new ArrayList<>();
+        this.openWeather = openWeather;
+        this.weatherBit = weatherBit;
+        this.darkSky = darkSky;
+        list.add(openWeather);
+        list.add(weatherBit);
+        list.add(darkSky);
+    }
 
     @GetMapping("/darkSky")
     public DarkSky darkSky() throws IOException {
@@ -37,9 +54,22 @@ public class MainController {
     }
 
     @GetMapping("/topWeather")
-    public OpenWeather weatherBitNew() throws IOException {
+    public OpenWeather topWeather() throws IOException {
         OpenWeather openWeather = new OpenWeather();
         openWeather.getHttpResponseNEW();
         return openWeather;
+    }
+
+    @GetMapping("/list")
+    public List<Weathers> allWeather() throws ExecutionException, InterruptedException {
+        ExecutorService executorService = Executors.newFixedThreadPool(numberOfThread);
+        ExecutorCompletionService<Weathers> completionService = new ExecutorCompletionService<>(executorService);
+        List<Weathers> weatherList = new ArrayList<>();
+        for (WeatherAPI temp: list) {
+            Future<Weathers> submit = completionService.submit(temp::getHttpResponse);
+            weatherList.add(submit.get());
+
+        }
+        return weatherList;
     }
 }

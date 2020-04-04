@@ -4,6 +4,7 @@ import com.aplication.weather.converter.JsonConverter;
 import com.aplication.weather.converter.OpenWeatherConverter;
 import com.aplication.weather.converter.TopOpenWeatherConverter;
 import com.aplication.weather.converter.WeatherConverter;
+import com.aplication.weather.model.Weathers;
 import com.aplication.weather.model.service.pojo.openweather.OpenWeatherPOJO;
 import com.aplication.weather.model.service.pojo.openweathertop.TopOpenWeatherPOJO;
 import org.apache.http.HttpResponse;
@@ -16,9 +17,10 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 
 @Service
-public class OpenWeather {
+public class OpenWeather implements WeatherAPI {
 
-    public OpenWeatherPOJO getHttpResponse() throws IOException {
+    @Override
+    public Weathers getHttpResponse() throws IOException {
         HttpClient httpClient = HttpClients.createDefault();
         String http = "http://api.openweathermap.org/data/2.5/weather?q=sumy&APPID=e17996a125b9134b4d6191a6491a1049";
         HttpGet httpGet = new HttpGet(http);
