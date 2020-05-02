@@ -18,6 +18,9 @@ target/
 *.iws
 *.iml
 *.ipr
+.mvn
+mvnw.cmd
+Weather.iml
 
 ### NetBeans ###
 /nbproject/private/
