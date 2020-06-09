@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Data;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
 @JsonPropertyOrder({
@@ -12,11 +14,15 @@ import java.util.List;
         "data"
 })
 @Data
+@XmlRootElement
 public class Hourly {
     @JsonProperty("summary")
+    @XmlElement
     private String summary;
     @JsonProperty("icon")
+    @XmlElement
     private String icon;
     @JsonProperty("data")
+    @XmlElement
     private List<HourlyData> data = null;
 }

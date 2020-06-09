@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Data;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 @JsonPropertyOrder({
         "time",
         "summary",
@@ -25,42 +28,61 @@ import lombok.Data;
         "ozone"
 })
 @Data
+@XmlRootElement
 public class Currently {
     @JsonProperty("time")
+    @XmlElement
     private Integer time;
     @JsonProperty("summary")
+    @XmlElement
     private String summary;
     @JsonProperty("icon")
+    @XmlElement
     private String icon;
     @JsonProperty("precipIntensity")
+    @XmlElement
     private Integer precipIntensity;
     @JsonProperty("precipProbability")
+    @XmlElement
     private Integer precipProbability;
     @JsonProperty("precipType")
+    @XmlElement
     private String precipType;
     @JsonProperty("temperature")
+    @XmlElement
     private Double temperature;
     @JsonProperty("apparentTemperature")
+    @XmlElement
     private Double apparentTemperature;
     @JsonProperty("dewPoint")
+    @XmlElement
     private Double dewPoint;
     @JsonProperty("humidity")
+    @XmlElement
     private Double humidity;
     @JsonProperty("pressure")
+    @XmlElement
     private Double pressure;
     @JsonProperty("windSpeed")
+    @XmlElement
     private Double windSpeed;
     @JsonProperty("windGust")
+    @XmlElement
     private Double windGust;
     @JsonProperty("windBearing")
+    @XmlElement
     private Integer windBearing;
     @JsonProperty("cloudCover")
+    @XmlElement
     private Double cloudCover;
     @JsonProperty("uvIndex")
+    @XmlElement
     private Integer uvIndex;
     @JsonProperty("visibility")
+    @XmlElement
     private Integer visibility;
     @JsonProperty("ozone")
+    @XmlElement
     private Integer ozone;
 
     @Override
@@ -85,5 +107,77 @@ public class Currently {
                 ", visibility=" + visibility +
                 ", ozone=" + ozone +
                 '}';
+    }
+
+    public Integer getTime() {
+        return time;
+    }
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public Integer getPrecipIntensity() {
+        return precipIntensity;
+    }
+
+    public Integer getPrecipProbability() {
+        return precipProbability;
+    }
+
+    public String getPrecipType() {
+        return precipType;
+    }
+
+    public Double getTemperature() {
+        return temperature;
+    }
+
+    public Double getApparentTemperature() {
+        return apparentTemperature;
+    }
+
+    public Double getDewPoint() {
+        return dewPoint;
+    }
+
+    public Double getHumidity() {
+        return humidity;
+    }
+
+    public Double getPressure() {
+        return pressure;
+    }
+
+    public Double getWindSpeed() {
+        return windSpeed;
+    }
+
+    public Double getWindGust() {
+        return windGust;
+    }
+
+    public Integer getWindBearing() {
+        return windBearing;
+    }
+
+    public Double getCloudCover() {
+        return cloudCover;
+    }
+
+    public Integer getUvIndex() {
+        return uvIndex;
+    }
+
+    public Integer getVisibility() {
+        return visibility;
+    }
+
+    public Integer getOzone() {
+        return ozone;
     }
 }

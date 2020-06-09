@@ -9,6 +9,7 @@ import com.aplication.weather.model.service.WeatherBit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
@@ -39,41 +40,58 @@ public class MainController {
     }
 
     @GetMapping("/darkSky")
-    public DarkSky darkSky() throws IOException {
-        darkSky.getHttpResponse();
+    public DarkSky darkSky(@RequestParam(defaultValue = "json") String saveType,
+                           @RequestParam(defaultValue = "sumy") String city) {
+
+        darkSky.getHttpResponse(city,saveType);
         logger.info("Description darkSky: " + darkSky.toString());
         return darkSky;
     }
 
-    @GetMapping("/openWeather")
-    public OpenWeather openWeather() throws IOException {
-        openWeather.getHttpResponse();
-        logger.info("Description openWeather: " + openWeather.toString());
-        return openWeather;
-    }
-
-    @GetMapping("/weatherBit")
-    public WeatherBit weatherBit() throws IOException {
-        weatherBit.getHttpResponse();
-        logger.info("Description weatherBit: " + weatherBit.toString());
-        return weatherBit;
-    }
+//    @GetMapping("/openWeather")
+//    public OpenWeather openWeather(@RequestParam(defaultValue = "sumy") String city) {
+//        openWeather.getHttpResponse(city);
+//        logger.info("Description openWeather: " + openWeather.toString());
+//        return openWeather;
+//    }
+//
+//    @GetMapping("/weatherBit")
+//    public WeatherBit weatherBit(@RequestParam(defaultValue = "sumy") String city) {
+//        weatherBit.getHttpResponse(city);
+//        logger.info("Description weatherBit: " + weatherBit.toString());
+//        return weatherBit;
+//    }
 
     @GetMapping("/topWeather")
-    public OpenWeather topWeather() throws IOException {
+    public OpenWeather topWeather() {
         openWeather.getHttpResponseTop();
         logger.info("Description topWeather: " + openWeather.toString());
         return openWeather;
     }
 
     @GetMapping("/list")
-    public List<Weathers> allWeather() throws ExecutionException, InterruptedException {
-        ExecutorService executorService = Executors.newFixedThreadPool(numberOfThread);
-        ExecutorCompletionService<Weathers> completionService = new ExecutorCompletionService<>(executorService);
+    public List<Weathers> allWeather(@RequestParam(defaultValue = "json") String saveType,
+                                     @RequestParam(defaultValue = "sumy") String city) {
+        logger.info("Getting weather description from  all weather API");
+        ExecutorService executorService =
+                Executors.newFixedThreadPool(numberOfThread);
+
+        ExecutorCompletionService<Weathers> completionService
+                = new ExecutorCompletionService<>(executorService);
         List<Weathers> weatherList = new ArrayList<>();
         for (WeatherAPI temp: list) {
-            Future<Weathers> submit = completionService.submit(temp::getHttpResponse);
-            weatherList.add(submit.get());
+            Future<Weathers> submit = null;
+            try {
+                submit = completionService.submit(() -> temp.getHttpResponse(city,saveType));
+            } catch (NullPointerException e) {
+                logger.error("Error: " + e);
+            }
+            try {
+                assert submit != null;
+                weatherList.add(submit.get());
+            } catch (InterruptedException | ExecutionException | NullPointerException e) {
+                logger.error("Error: " + e);
+            }
         }
         logger.info("Description of all weather.");
         return weatherList;

@@ -1,9 +1,6 @@
 package com.aplication.weather.model.service;
 
-import com.aplication.weather.converter.JsonConverter;
-import com.aplication.weather.converter.OpenWeatherConverter;
-import com.aplication.weather.converter.TopOpenWeatherConverter;
-import com.aplication.weather.converter.WeatherConverter;
+import com.aplication.weather.converter.*;
 import com.aplication.weather.model.Weathers;
 import com.aplication.weather.model.service.pojo.openweather.OpenWeatherPOJO;
 import com.aplication.weather.model.service.pojo.openweathertop.TopOpenWeatherPOJO;
@@ -23,7 +20,7 @@ public class OpenWeather implements WeatherAPI {
     private final static Logger logger = Logger.getLogger(OpenWeather.class);
 
     @Override
-    public Weathers getHttpResponse() {
+    public Weathers getHttpResponse(String city, String saveType) {
         HttpClient httpClient = HttpClients.createDefault();
         logger.info("Get http + httpResponse");
         String http = "http://api.openweathermap.org/data/2.5/weather?q=sumy&APPID=e17996a125b9134b4d6191a6491a1049";
@@ -32,9 +29,9 @@ public class OpenWeather implements WeatherAPI {
         try {
             httpResponse = httpClient.execute(httpGet);
             WeatherConverter weatherConverter = new OpenWeatherConverter();
-            OpenWeatherPOJO weather = null;
+            OpenWeatherPOJO weather;
             weather = (OpenWeatherPOJO) weatherConverter.toJavaObject(EntityUtils.toString(httpResponse.getEntity()));
-            new JsonConverter().toJSON(weather);
+            new MainConverter().mainConverter(saveType, weather);
             return weather;
         } catch (IOException e) {
             logger.error("Cannot get weather: " + e);
