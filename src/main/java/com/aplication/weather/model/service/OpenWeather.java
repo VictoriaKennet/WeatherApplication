@@ -10,6 +10,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -19,19 +20,25 @@ public class OpenWeather implements WeatherAPI {
 
     private final static Logger logger = Logger.getLogger(OpenWeather.class);
 
+    @Value(value = "${api.weather.darksky.name}")
+    private String name;
+    @Value(value = "${api.weather.openweathermap.key}")
+    private String key;
+
     @Override
     public Weathers getHttpResponse(String city, String saveType) {
         HttpClient httpClient = HttpClients.createDefault();
         logger.info("Get http + httpResponse");
-        String http = "http://api.openweathermap.org/data/2.5/weather?q=sumy&APPID=e17996a125b9134b4d6191a6491a1049";
+        String http = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&APPID=" + key;
         HttpGet httpGet = new HttpGet(http);
-        HttpResponse httpResponse = null;
+        HttpResponse httpResponse;
         try {
             httpResponse = httpClient.execute(httpGet);
             WeatherConverter weatherConverter = new OpenWeatherConverter();
             OpenWeatherPOJO weather;
             weather = (OpenWeatherPOJO) weatherConverter.toJavaObject(EntityUtils.toString(httpResponse.getEntity()));
-            new MainConverter().mainConverter(saveType, weather);
+            OpenWeatherConverter openWeatherConverter = new OpenWeatherConverter();
+            new MainConverter().mainConverter(saveType, openWeatherConverter.convert(weather));
             return weather;
         } catch (IOException e) {
             logger.error("Cannot get weather: " + e);
@@ -39,10 +46,10 @@ public class OpenWeather implements WeatherAPI {
         }
     }
 
-    public TopOpenWeatherPOJO getHttpResponseTop() {
+    public TopOpenWeatherPOJO getHttpResponseTop(String city, String saveType) {
         HttpClient httpClient = HttpClients.createDefault();
         logger.info("Get http + httpResponse");
-        String http = "https://history.openweathermap.org/data/2.5/aggregated/year?q=sumy&appid=e17996a125b9134b4d6191a6491a1049";
+        String http = "https://history.openweathermap.org/data/2.5/aggregated/year?q=" + city + "&appid=e17996a125b9134b4d6191a6491a1049";
         HttpGet httpGet = new HttpGet(http);
         HttpResponse httpResponse = null;
         try {

@@ -62,12 +62,12 @@ public class MainController {
 //        return weatherBit;
 //    }
 
-    @GetMapping("/topWeather")
-    public OpenWeather topWeather() {
-        openWeather.getHttpResponseTop();
-        logger.info("Description topWeather: " + openWeather.toString());
-        return openWeather;
-    }
+//    @GetMapping("/topWeather")
+//    public OpenWeather topWeather() {
+//        openWeather.getHttpResponseTop();
+//        logger.info("Description topWeather: " + openWeather.toString());
+//        return openWeather;
+//    }
 
     @GetMapping("/list")
     public List<Weathers> allWeather(@RequestParam(defaultValue = "json") String saveType,

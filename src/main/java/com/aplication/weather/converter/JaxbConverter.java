@@ -12,7 +12,6 @@ import static javax.xml.bind.JAXBContext.*;
 
 public class JaxbConverter {
 
-
     public Weathers fromXmlToObject(String filePath) {
         try {
             // создаем объект JAXBContext - точку входа для JAXB
@@ -31,9 +30,6 @@ public class JaxbConverter {
         try {
 
             File file = new File("file.xml");
-
-
-
             JAXBContext jaxbContext = newInstance(Weathers.class);
             Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
 

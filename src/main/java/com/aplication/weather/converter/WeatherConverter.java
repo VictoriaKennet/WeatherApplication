@@ -7,4 +7,5 @@ import java.io.IOException;
 @FunctionalInterface
 public interface WeatherConverter {
     Weathers toJavaObject(String https) throws IOException;
+
 }
