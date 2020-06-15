@@ -8,10 +8,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
 import java.io.ByteArrayInputStream;
+import java.io.FileNotFoundException;
 
 public class MainConverter {
 
-    public void mainConverter (String saveType, Weathers weather) {
+    public void mainConverter (String saveType, Weathers weather) throws FileNotFoundException {
         switch (saveType) {
             case "xml":
                 new JaxbConverter().convertObjectToXml(weather);

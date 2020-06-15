@@ -31,7 +31,7 @@ public class JaxbConverter {
     public void convertObjectToXml(Weathers weather) {
         try {
             logger.info("Add weather to XML.");
-            File file = new File(this.getClass().getClassLoader().getResource("weather.xml").getFile());
+            File file = new File("weather.xml");
             JAXBContext jaxbContext = newInstance(Weathers.class);
             Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
             jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
