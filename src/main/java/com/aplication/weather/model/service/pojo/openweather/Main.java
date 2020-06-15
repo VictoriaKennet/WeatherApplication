@@ -32,4 +32,8 @@ public class Main {
     private Integer seaLevel;
     @JsonProperty("grnd_level")
     private Integer grndLevel;
+
+    public Double getTemp() {
+        return temp;
+    }
 }

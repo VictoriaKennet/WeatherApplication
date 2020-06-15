@@ -119,4 +119,24 @@ public class DataWeatherBit {
     private Double elevAngle;
     @JsonProperty("app_temp")
     private Double appTemp;
+
+    public Integer getClouds() {
+        return clouds;
+    }
+
+    public Double getWindSpd() {
+        return windSpd;
+    }
+
+    public Integer getWindDir() {
+        return windDir;
+    }
+
+    public WeatherData getWeather() {
+        return weather;
+    }
+
+    public Double getTemp() {
+        return temp;
+    }
 }

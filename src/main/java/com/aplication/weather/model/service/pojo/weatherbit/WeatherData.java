@@ -17,4 +17,8 @@ public class WeatherData {
     private String code;
     @JsonProperty("description")
     private String description;
+
+    public String getDescription() {
+        return description;
+    }
 }

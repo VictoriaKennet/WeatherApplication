@@ -53,4 +53,20 @@ public class OpenWeatherPOJO extends Weathers {
     private String name;
     @JsonProperty("cod")
     private Integer cod;
+
+    public List<Weather> getWeather() {
+        return weather;
+    }
+
+    public Main getMain() {
+        return main;
+    }
+
+    public Wind getWind() {
+        return wind;
+    }
+
+    public Clouds getClouds() {
+        return clouds;
+    }
 }

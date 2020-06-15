@@ -109,56 +109,16 @@ public class Currently {
                 '}';
     }
 
-    public Integer getTime() {
-        return time;
-    }
-
     public String getSummary() {
         return summary;
-    }
-
-    public String getIcon() {
-        return icon;
-    }
-
-    public Integer getPrecipIntensity() {
-        return precipIntensity;
-    }
-
-    public Integer getPrecipProbability() {
-        return precipProbability;
-    }
-
-    public String getPrecipType() {
-        return precipType;
     }
 
     public Double getTemperature() {
         return temperature;
     }
 
-    public Double getApparentTemperature() {
-        return apparentTemperature;
-    }
-
-    public Double getDewPoint() {
-        return dewPoint;
-    }
-
-    public Double getHumidity() {
-        return humidity;
-    }
-
-    public Double getPressure() {
-        return pressure;
-    }
-
     public Double getWindSpeed() {
         return windSpeed;
-    }
-
-    public Double getWindGust() {
-        return windGust;
     }
 
     public Integer getWindBearing() {
@@ -169,15 +129,4 @@ public class Currently {
         return cloudCover;
     }
 
-    public Integer getUvIndex() {
-        return uvIndex;
-    }
-
-    public Integer getVisibility() {
-        return visibility;
-    }
-
-    public Integer getOzone() {
-        return ozone;
-    }
 }

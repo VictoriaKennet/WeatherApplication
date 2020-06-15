@@ -3,6 +3,7 @@ package com.aplication.weather.converter;
 import com.aplication.weather.controller.MainController;
 import com.aplication.weather.model.Weathers;
 import com.aplication.weather.model.service.pojo.openweather.OpenWeatherPOJO;
+import com.aplication.weather.model.service.pojo.openweather.Weather;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
 import org.springframework.core.convert.converter.Converter;
@@ -21,15 +22,14 @@ public class OpenWeatherConverter implements WeatherConverter, Converter<OpenWea
 
     @Override
     public Weathers convert(OpenWeatherPOJO openWeatherPOJO) {
-//        logger.debug("OpenWeatherPOJO is converting to Weather");
-//        try {
-//            return new Weather(openWeatherPOJO.getMain().getTemp() - 273,
-//                    openWeatherPOJO.getWeather().get(0).getDescription(), openWeatherPOJO.getWind().getSpeed(),
-//                    openWeatherPOJO.getWind().getDeg(), openWeatherPOJO.getClouds().getAll());
-//        } catch (NullPointerException e) {
-//            logger.error("Error: " + e);
-//            return null;
-//        }
-        return null;
+        logger.debug("OpenWeatherPOJO is converting to Weather");
+        try {
+            return new Weathers(openWeatherPOJO.getMain().getTemp() - 273,
+                    openWeatherPOJO.getWeather().get(0).getDescription(), openWeatherPOJO.getWind().getSpeed(),
+                    openWeatherPOJO.getWind().getDeg(), openWeatherPOJO.getClouds().getAll());
+        } catch (NullPointerException e) {
+            logger.error("Error: " + e);
+            return null;
+        }
     }
 }

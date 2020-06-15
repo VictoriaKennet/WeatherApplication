@@ -20,4 +20,9 @@ public class Weather {
     private String description;
     @JsonProperty("icon")
     private String icon;
+
+
+    public String getDescription() {
+        return description;
+    }
 }

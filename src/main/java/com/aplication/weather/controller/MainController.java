@@ -41,7 +41,6 @@ public class MainController {
     @GetMapping("/darkSky")
     public DarkSky darkSky(@RequestParam(defaultValue = "json") String saveType,
                            @RequestParam(defaultValue = "sumy") String city) {
-
         darkSky.getHttpResponse(city,saveType);
         logger.info("Description darkSky: " + darkSky.toString());
         return darkSky;

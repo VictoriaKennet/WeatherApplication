@@ -18,4 +18,8 @@ public class WeatherBitPOJO extends Weathers {
     private List<DataWeatherBit> data = null;
     @JsonProperty("count")
     private Integer count;
+
+    public List<DataWeatherBit> getData() {
+        return data;
+    }
 }

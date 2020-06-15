@@ -23,17 +23,16 @@ public class WeatherBitConverter implements WeatherConverter, Converter<WeatherB
 
     @Override
     public Weathers convert(WeatherBitPOJO weatherBitPOJO) {
-//        logger.debug("WeatherBitPOJO is converting to Weather");
-//        try {
-//            return new Weathers(weatherBitPOJO.getData().get(0).getTemp(),
-//                    weatherBitPOJO.getData().get(0).getWeather().getDescription(),
-//                    weatherBitPOJO.getData().get(0).getWindSpd(),
-//                    weatherBitPOJO.getData().get(0).getWindDir(),
-//                    weatherBitPOJO.getData().get(0).getClouds());
-//        } catch (NullPointerException e) {
-//            logger.error("Error: " + e);
-//            return null;
-//        }
-        return null;
+        logger.debug("WeatherBitPOJO is converting to Weather");
+        try {
+            return new Weathers(weatherBitPOJO.getData().get(0).getTemp(),
+                    weatherBitPOJO.getData().get(0).getWeather().getDescription(),
+                    weatherBitPOJO.getData().get(0).getWindSpd(),
+                    weatherBitPOJO.getData().get(0).getWindDir(),
+                    weatherBitPOJO.getData().get(0).getClouds());
+        } catch (NullPointerException e) {
+            logger.error("Error: " + e);
+            return null;
+        }
     }
 }

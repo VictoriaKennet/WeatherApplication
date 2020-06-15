@@ -17,7 +17,6 @@ public class JaxbConverter {
             // создаем объект JAXBContext - точку входа для JAXB
             JAXBContext jaxbContext = newInstance(Weathers.class);
             Unmarshaller un = jaxbContext.createUnmarshaller();
-
             return (Weathers) un.unmarshal(new File(filePath));
         } catch (JAXBException e) {
             e.printStackTrace();
