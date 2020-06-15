@@ -38,14 +38,22 @@ public class DarkSky implements WeatherAPI {
         HttpResponse httpResponse;
         try {
             httpResponse = httpClient.execute(httpGet);
-            DarkSkyConverter darkSkyConverter = new DarkSkyConverter();
+            DarkSkyConverter darkSkyConverter = new DarkSkyConverter(name);
             DarkSkyPOJO weather = (DarkSkyPOJO) darkSkyConverter.toJavaObject(EntityUtils.toString(httpResponse.getEntity()));
             new MainConverter().mainConverter(saveType, darkSkyConverter.convert(weather));
             logger.info("Success DarkSky!");
-            return weather;
+            return darkSkyConverter.convert(weather);
         } catch (IOException e) {
             logger.error("Cannot get info: " + e);
             return null;
         }
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

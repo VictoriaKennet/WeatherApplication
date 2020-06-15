@@ -1,6 +1,7 @@
 package com.aplication.weather.converter;
 
 import com.aplication.weather.model.Weathers;
+import org.apache.log4j.Logger;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -12,11 +13,14 @@ import static javax.xml.bind.JAXBContext.*;
 
 public class JaxbConverter {
 
+    private final static Logger logger = Logger.getLogger(JaxbConverter.class);
+
     public Weathers fromXmlToObject(String filePath) {
         try {
-            // создаем объект JAXBContext - точку входа для JAXB
+            logger.info("Add weather from XML.");
             JAXBContext jaxbContext = newInstance(Weathers.class);
             Unmarshaller un = jaxbContext.createUnmarshaller();
+            logger.info("Success getting inf from file.");
             return (Weathers) un.unmarshal(new File(filePath));
         } catch (JAXBException e) {
             e.printStackTrace();
@@ -24,20 +28,15 @@ public class JaxbConverter {
         return null;
     }
 
-    // сохраняем объект в XML файл
     public void convertObjectToXml(Weathers weather) {
         try {
-
-            File file = new File("file.xml");
+            logger.info("Add weather to XML.");
+            File file = new File(this.getClass().getClassLoader().getResource("weather.xml").getFile());
             JAXBContext jaxbContext = newInstance(Weathers.class);
             Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-
-            // output pretty printed
             jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-
             jaxbMarshaller.marshal(weather, file);
-            jaxbMarshaller.marshal(weather, System.out);
-
+            logger.info("Success adding inf to file.");
         } catch (JAXBException e) {
             e.printStackTrace();
         }

@@ -1,6 +1,9 @@
 package com.aplication.weather.controller;
 
+import com.aplication.weather.converter.DocConverter;
+import com.aplication.weather.converter.MainConverter;
 import com.aplication.weather.model.Weathers;
+import com.aplication.weather.model.service.pojo.openweather.Weather;
 import org.apache.log4j.Logger;
 import com.aplication.weather.model.service.DarkSky;
 import com.aplication.weather.model.service.OpenWeather;
@@ -8,10 +11,13 @@ import com.aplication.weather.model.service.WeatherAPI;
 import com.aplication.weather.model.service.WeatherBit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
+import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
@@ -38,31 +44,31 @@ public class MainController {
         list.add(darkSky);
     }
 
-    @GetMapping("/darkSky")
-    public DarkSky darkSky(@RequestParam(defaultValue = "json") String saveType,
+    @GetMapping(value = "/darkSky", produces = { "application/json", "application/xml" })
+    public Weathers darkSky(@RequestParam(defaultValue = "xml") String saveType,
                            @RequestParam(defaultValue = "sumy") String city) {
-        darkSky.getHttpResponse(city,saveType);
+        Weathers weathers = darkSky.getHttpResponse(city,saveType);
         logger.info("Description darkSky: " + darkSky.toString());
-        return darkSky;
+        return weathers;
     }
 
-    @GetMapping("/openWeather")
-    public OpenWeather openWeather(@RequestParam(defaultValue = "json") String saveType,
+    @GetMapping(value = "/openWeather", produces = { "application/json", "application/xml" })
+    public Weathers openWeather(@RequestParam(defaultValue = "json") String saveType,
                                    @RequestParam(defaultValue = "sumy") String city) {
-        openWeather.getHttpResponse(city,saveType);
+        Weathers weathers = openWeather.getHttpResponse(city,saveType);
         logger.info("Description openWeather: " + openWeather.toString());
-        return openWeather;
+        return weathers;
     }
 
-    @GetMapping("/weatherBit")
-    public WeatherBit weatherBit(@RequestParam(defaultValue = "json") String saveType,
+    @GetMapping(value = "/weatherBit", produces = { "application/json", "application/xml" })
+    public Weathers weatherBit(@RequestParam(defaultValue = "json") String saveType,
                                  @RequestParam(defaultValue = "sumy") String city) {
-        weatherBit.getHttpResponse(city,saveType);
+        Weathers weathers = weatherBit.getHttpResponse(city,saveType);
         logger.info("Description weatherBit: " + weatherBit.toString());
-        return weatherBit;
+        return weathers;
     }
 
-    @GetMapping("/list")
+    @GetMapping(value = "/list", produces = { "application/json", "application/xml" })
     public List<Weathers> allWeather(@RequestParam(defaultValue = "json") String saveType,
                                      @RequestParam(defaultValue = "sumy") String city) {
 
@@ -88,5 +94,26 @@ public class MainController {
         }
         logger.info("Description of all weather.");
         return weatherList;
+    }
+
+    @GetMapping(value = "/document")
+    public ResponseEntity<InputStreamResource> getDoc
+            (@RequestParam(defaultValue = "darkSky") String weatherAPI,
+             @RequestParam(defaultValue = "sumy") String city,
+             @RequestParam(defaultValue = "json") String saveType) {
+        WeatherAPI weathers = null;
+        switch (weatherAPI) {
+            case "OpenWeather":
+                weathers = openWeather;
+                break;
+            case "WeatherBit":
+                weathers = weatherBit;
+                break;
+            default:
+                weathers = darkSky;
+                break;
+        }
+        MainConverter mainConverter = new MainConverter();
+        return mainConverter.getDocument(weathers, city, saveType);
     }
 }

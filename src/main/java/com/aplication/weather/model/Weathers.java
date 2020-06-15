@@ -5,7 +5,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class Weathers {
 
-    private int apiId;
     private String apiName;
     private double temperature;
     private String weatherDescription;
@@ -16,7 +15,8 @@ public class Weathers {
     public Weathers() {
     }
 
-    public Weathers(double temperature, String weatherDescription, double windSpeed, double windDegree, double cloudCover) {
+    public Weathers(String apiName, double temperature, String weatherDescription, double windSpeed, double windDegree, double cloudCover) {
+        this.apiName = apiName;
         this.temperature = temperature;
         this.weatherDescription = weatherDescription;
         this.windSpeed = windSpeed;
@@ -24,13 +24,6 @@ public class Weathers {
         this.cloudCover = cloudCover;
     }
 
-    public int getApiId() {
-        return apiId;
-    }
-
-    public void setApiId(int apiId) {
-        this.apiId = apiId;
-    }
 
     public String getApiName() {
         return apiName;

@@ -35,16 +35,24 @@ public class OpenWeather implements WeatherAPI {
         HttpResponse httpResponse;
         try {
             httpResponse = httpClient.execute(httpGet);
-            WeatherConverter weatherConverter = new OpenWeatherConverter();
+            WeatherConverter weatherConverter = new OpenWeatherConverter(name);
             OpenWeatherPOJO weather;
             weather = (OpenWeatherPOJO) weatherConverter.toJavaObject(EntityUtils.toString(httpResponse.getEntity()));
-            OpenWeatherConverter openWeatherConverter = new OpenWeatherConverter();
+            OpenWeatherConverter openWeatherConverter = new OpenWeatherConverter(name);
             new MainConverter().mainConverter(saveType, openWeatherConverter.convert(weather));
             logger.info("Success OpenWeather!");
-            return weather;
+            return openWeatherConverter.convert(weather);
         } catch (IOException e) {
             logger.error("Cannot get weather: " + e);
             return null;
         }
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

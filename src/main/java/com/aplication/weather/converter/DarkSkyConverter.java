@@ -12,6 +12,11 @@ import java.io.IOException;
 public class DarkSkyConverter implements WeatherConverter, Converter<DarkSkyPOJO, Weathers> {
 
     private final static Logger logger = Logger.getLogger(DarkSkyConverter.class);
+    public String name;
+
+    public DarkSkyConverter(String name) {
+        this.name = name;
+    }
 
     @Override
     public Weathers toJavaObject(String https) throws IOException {
@@ -23,7 +28,7 @@ public class DarkSkyConverter implements WeatherConverter, Converter<DarkSkyPOJO
     public Weathers convert(DarkSkyPOJO darkSkyPOJO) {
         logger.debug("DarkSkyPOJO is converting to weather");
         try {
-            return new Weathers((darkSkyPOJO.getCurrently().getTemperature() - 32) * 5 / 9,
+            return new Weathers(name, (darkSkyPOJO.getCurrently().getTemperature() - 32) * 5 / 9,
                     darkSkyPOJO.getCurrently().getSummary(),
                     darkSkyPOJO.getCurrently().getWindSpeed() * 0.44704,
                     darkSkyPOJO.getCurrently().getWindBearing(),

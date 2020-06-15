@@ -1,6 +1,4 @@
 package com.aplication.weather.converter;
-
-import com.aplication.weather.controller.MainController;
 import com.aplication.weather.model.Weathers;
 import org.apache.log4j.Logger;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -16,7 +14,7 @@ import java.io.IOException;
 public class DocConverter {
 
     private final static org.apache.log4j.Logger logger = Logger.getLogger(DocConverter.class);
-    private final File template = new File(this.getClass().getClassLoader().getResource("template.docx").getFile());
+    private final File template = new File(this.getClass().getClassLoader().getResource("pattern.docx").getFile());
 
     public byte[] writeWeatherToDocByTemplate(Weathers weather) {
         if (weather == null) {
@@ -27,18 +25,18 @@ public class DocConverter {
         try {
             document = new XWPFDocument(OPCPackage.open(template));
         } catch (IOException | InvalidFormatException e) {
-            logger.error("Error: " + e);
+            logger.error("Error with XWPFDocument: " + e);
             return null;
         }
         for (XWPFParagraph paragraph : document.getParagraphs()) {
             for (XWPFRun run : paragraph.getRuns()) {
                 String text = run.getText(0);
                 text = text.replace("API", weather.getApiName());
-                text = text.replace("TEMPERATURE", Double.valueOf(weather.getTemperature()).toString());
-                text = text.replace("WEATHERDESCRIPTION", weather.getWeatherDescription());
-                text = text.replace("WINDSPEED", Double.valueOf(weather.getWindSpeed()).toString());
-                text = text.replace("WINDDIGREE", Double.valueOf(weather.getWindDegree()).toString());
-                text = text.replace("CLOUDCOVER", Double.valueOf(weather.getCloudCover()).toString());
+                text = text.replace("temperature", Double.valueOf(weather.getTemperature()).toString());
+                text = text.replace("weatherdescription", weather.getWeatherDescription());
+                text = text.replace("windspeed", Double.valueOf(weather.getWindSpeed()).toString());
+                text = text.replace("winddigree", Double.valueOf(weather.getWindDegree()).toString());
+                text = text.replace("cloudcover", Double.valueOf(weather.getCloudCover()).toString());
                 run.setText(text, 0);
             }
         }
@@ -46,7 +44,7 @@ public class DocConverter {
         try {
             document.write(stream);
         } catch (IOException e) {
-            logger.error("Error: " + e);
+            logger.error("Error with writing: " + e);
             return null;
         }
         return stream.toByteArray();

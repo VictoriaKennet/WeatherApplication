@@ -14,6 +14,11 @@ import java.io.IOException;
 public class WeatherBitConverter implements WeatherConverter, Converter<WeatherBitPOJO, Weathers> {
 
     private final static Logger logger = Logger.getLogger(WeatherBitConverter.class);
+    public String name;
+
+    public WeatherBitConverter(String name) {
+        this.name = name;
+    }
 
     @Override
     public Weathers toJavaObject(String https) throws IOException {
@@ -25,7 +30,7 @@ public class WeatherBitConverter implements WeatherConverter, Converter<WeatherB
     public Weathers convert(WeatherBitPOJO weatherBitPOJO) {
         logger.debug("WeatherBitPOJO is converting to Weather");
         try {
-            return new Weathers(weatherBitPOJO.getData().get(0).getTemp(),
+            return new Weathers(name, weatherBitPOJO.getData().get(0).getTemp(),
                     weatherBitPOJO.getData().get(0).getWeather().getDescription(),
                     weatherBitPOJO.getData().get(0).getWindSpd(),
                     weatherBitPOJO.getData().get(0).getWindDir(),
