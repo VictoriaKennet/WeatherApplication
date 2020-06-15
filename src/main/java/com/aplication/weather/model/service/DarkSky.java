@@ -32,7 +32,7 @@ public class DarkSky implements WeatherAPI {
     @Override
     public Weathers getHttpResponse(String city, String saveType) {
         HttpClient httpClient = HttpClients.createDefault();
-        logger.info("Get http + httpResponse");
+        logger.info("Get http httpResponse DarkSky.");
         String http = "https://api.darksky.net/forecast/" + key + "/50.9216,34.80029";
         HttpGet httpGet = new HttpGet(http);
         HttpResponse httpResponse;
@@ -41,6 +41,7 @@ public class DarkSky implements WeatherAPI {
             DarkSkyConverter darkSkyConverter = new DarkSkyConverter();
             DarkSkyPOJO weather = (DarkSkyPOJO) darkSkyConverter.toJavaObject(EntityUtils.toString(httpResponse.getEntity()));
             new MainConverter().mainConverter(saveType, darkSkyConverter.convert(weather));
+            logger.info("Success DarkSky!");
             return weather;
         } catch (IOException e) {
             logger.error("Cannot get info: " + e);

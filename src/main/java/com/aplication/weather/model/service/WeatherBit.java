@@ -21,7 +21,7 @@ public class WeatherBit implements WeatherAPI {
     @Override
     public Weathers getHttpResponse(String city, String saveType) {
         HttpClient httpClient = HttpClients.createDefault();
-        logger.info("Get http + httpResponse");
+        logger.info("Get http httpResponse WeatherBit.");
         String http = "https://api.weatherbit.io/v2.0/current?city=sumy&key=4e6a6c68f2fd4beda80bd209559104e4";
         HttpGet httpGet = new HttpGet(http);
         HttpResponse httpResponse;
@@ -30,6 +30,7 @@ public class WeatherBit implements WeatherAPI {
             WeatherBitConverter weatherBitConverter = new WeatherBitConverter();
             WeatherBitPOJO weather = (WeatherBitPOJO) weatherBitConverter.toJavaObject(EntityUtils.toString(httpResponse.getEntity()));
             new MainConverter().mainConverter(saveType, weatherBitConverter.convert(weather));
+            logger.info("Success WeatherBit!");
             return weather;
         } catch (IOException e) {
             logger.error("Cannot get weather: " + e);

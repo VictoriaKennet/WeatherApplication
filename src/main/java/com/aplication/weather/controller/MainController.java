@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
@@ -48,47 +47,42 @@ public class MainController {
         return darkSky;
     }
 
-//    @GetMapping("/openWeather")
-//    public OpenWeather openWeather(@RequestParam(defaultValue = "sumy") String city) {
-//        openWeather.getHttpResponse(city);
-//        logger.info("Description openWeather: " + openWeather.toString());
-//        return openWeather;
-//    }
-//
-//    @GetMapping("/weatherBit")
-//    public WeatherBit weatherBit(@RequestParam(defaultValue = "sumy") String city) {
-//        weatherBit.getHttpResponse(city);
-//        logger.info("Description weatherBit: " + weatherBit.toString());
-//        return weatherBit;
-//    }
+    @GetMapping("/openWeather")
+    public OpenWeather openWeather(@RequestParam(defaultValue = "json") String saveType,
+                                   @RequestParam(defaultValue = "sumy") String city) {
+        openWeather.getHttpResponse(city,saveType);
+        logger.info("Description openWeather: " + openWeather.toString());
+        return openWeather;
+    }
 
-//    @GetMapping("/topWeather")
-//    public OpenWeather topWeather() {
-//        openWeather.getHttpResponseTop();
-//        logger.info("Description topWeather: " + openWeather.toString());
-//        return openWeather;
-//    }
+    @GetMapping("/weatherBit")
+    public WeatherBit weatherBit(@RequestParam(defaultValue = "json") String saveType,
+                                 @RequestParam(defaultValue = "sumy") String city) {
+        weatherBit.getHttpResponse(city,saveType);
+        logger.info("Description weatherBit: " + weatherBit.toString());
+        return weatherBit;
+    }
 
     @GetMapping("/list")
     public List<Weathers> allWeather(@RequestParam(defaultValue = "json") String saveType,
                                      @RequestParam(defaultValue = "sumy") String city) {
-        logger.info("Getting weather description from  all weather API");
-        ExecutorService executorService =
-                Executors.newFixedThreadPool(numberOfThread);
 
-        ExecutorCompletionService<Weathers> completionService
-                = new ExecutorCompletionService<>(executorService);
+        logger.info("Getting weather description from  all weather API");
+        ExecutorService executorService = Executors.newFixedThreadPool(numberOfThread);
+
+        ExecutorCompletionService<Weathers> completionService = new ExecutorCompletionService<>(executorService);
         List<Weathers> weatherList = new ArrayList<>();
+        List<Future<Weathers>> futures = new ArrayList<>();
         for (WeatherAPI temp: list) {
-            Future<Weathers> submit = null;
             try {
-                submit = completionService.submit(() -> temp.getHttpResponse(city,saveType));
+                futures.add(completionService.submit(() -> temp.getHttpResponse(city,saveType)));
             } catch (NullPointerException e) {
                 logger.error("Error: " + e);
             }
+        }
+        for (int i = 0; i < futures.size(); i++) {
             try {
-                assert submit != null;
-                weatherList.add(submit.get());
+                weatherList.add(futures.get(i).get());
             } catch (InterruptedException | ExecutionException | NullPointerException e) {
                 logger.error("Error: " + e);
             }

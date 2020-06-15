@@ -27,8 +27,9 @@ public class OpenWeather implements WeatherAPI {
 
     @Override
     public Weathers getHttpResponse(String city, String saveType) {
+
         HttpClient httpClient = HttpClients.createDefault();
-        logger.info("Get http + httpResponse");
+        logger.info("Get http httpResponse from OpenWeather");
         String http = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&APPID=" + key;
         HttpGet httpGet = new HttpGet(http);
         HttpResponse httpResponse;
@@ -39,25 +40,7 @@ public class OpenWeather implements WeatherAPI {
             weather = (OpenWeatherPOJO) weatherConverter.toJavaObject(EntityUtils.toString(httpResponse.getEntity()));
             OpenWeatherConverter openWeatherConverter = new OpenWeatherConverter();
             new MainConverter().mainConverter(saveType, openWeatherConverter.convert(weather));
-            return weather;
-        } catch (IOException e) {
-            logger.error("Cannot get weather: " + e);
-            return null;
-        }
-    }
-
-    public TopOpenWeatherPOJO getHttpResponseTop(String city, String saveType) {
-        HttpClient httpClient = HttpClients.createDefault();
-        logger.info("Get http + httpResponse");
-        String http = "https://history.openweathermap.org/data/2.5/aggregated/year?q=" + city + "&appid=e17996a125b9134b4d6191a6491a1049";
-        HttpGet httpGet = new HttpGet(http);
-        HttpResponse httpResponse = null;
-        try {
-            httpResponse = httpClient.execute(httpGet);
-            WeatherConverter weatherConverter = new TopOpenWeatherConverter();
-            TopOpenWeatherPOJO weather = null;
-            weather = (TopOpenWeatherPOJO) weatherConverter.toJavaObject(EntityUtils.toString(httpResponse.getEntity()));
-            new JsonConverter().toJSON(weather);
+            logger.info("Success OpenWeather!");
             return weather;
         } catch (IOException e) {
             logger.error("Cannot get weather: " + e);
