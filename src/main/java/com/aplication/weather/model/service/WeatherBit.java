@@ -1,6 +1,7 @@
 package com.aplication.weather.model.service;
 
-import com.aplication.weather.converter.*;
+import com.aplication.weather.converter.MainConverter;
+import com.aplication.weather.converter.WeatherBitConverter;
 import com.aplication.weather.model.Weathers;
 import com.aplication.weather.model.service.pojo.weatherbit.WeatherBitPOJO;
 import org.apache.http.HttpResponse;
@@ -34,7 +35,11 @@ public class WeatherBit implements WeatherAPI {
         try {
             httpResponse = httpClient.execute(httpGet);
             WeatherBitConverter weatherBitConverter = new WeatherBitConverter(name);
-            WeatherBitPOJO weather = (WeatherBitPOJO) weatherBitConverter.toJavaObject(EntityUtils.toString(httpResponse.getEntity()));
+            String result = "";
+            if (httpResponse.getEntity() != null) {
+                result = EntityUtils.toString(httpResponse.getEntity());
+            }
+            WeatherBitPOJO weather = (WeatherBitPOJO) weatherBitConverter.toJavaObject(result);
             new MainConverter().mainConverter(saveType, weatherBitConverter.convert(weather));
             logger.info("Success WeatherBit!");
             return weatherBitConverter.convert(weather);

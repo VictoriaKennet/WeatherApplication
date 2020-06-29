@@ -1,23 +1,21 @@
 package com.aplication.weather.controller;
 
-import com.aplication.weather.converter.DocConverter;
 import com.aplication.weather.converter.MainConverter;
 import com.aplication.weather.model.Weathers;
-import com.aplication.weather.model.service.pojo.openweather.Weather;
-import org.apache.log4j.Logger;
 import com.aplication.weather.model.service.DarkSky;
 import com.aplication.weather.model.service.OpenWeather;
 import com.aplication.weather.model.service.WeatherAPI;
 import com.aplication.weather.model.service.WeatherBit;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
@@ -44,28 +42,35 @@ public class MainController {
         list.add(darkSky);
     }
 
+    private ResponseEntity responseEntity(Object response) {
+        if (response == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body( "City isn`t found!");
+        }
+        return new ResponseEntity(response, HttpStatus.OK);
+    }
+
     @GetMapping(value = "/darkSky", produces = { "application/json", "application/xml" })
-    public Weathers darkSky(@RequestParam(defaultValue = "xml") String saveType,
+    public ResponseEntity darkSky(@RequestParam(defaultValue = "xml") String saveType,
                            @RequestParam(defaultValue = "sumy") String city) {
         Weathers weathers = darkSky.getHttpResponse(city,saveType);
         logger.info("Description darkSky: " + darkSky.toString());
-        return weathers;
+        return responseEntity(weathers);
     }
 
     @GetMapping(value = "/openWeather", produces = { "application/json", "application/xml" })
-    public Weathers openWeather(@RequestParam(defaultValue = "json") String saveType,
+    public ResponseEntity openWeather(@RequestParam(defaultValue = "json") String saveType,
                                    @RequestParam(defaultValue = "sumy") String city) {
         Weathers weathers = openWeather.getHttpResponse(city,saveType);
         logger.info("Description openWeather: " + openWeather.toString());
-        return weathers;
+        return responseEntity(weathers);
     }
 
     @GetMapping(value = "/weatherBit", produces = { "application/json", "application/xml" })
-    public Weathers weatherBit(@RequestParam(defaultValue = "json") String saveType,
+    public ResponseEntity weatherBit(@RequestParam(defaultValue = "json") String saveType,
                                  @RequestParam(defaultValue = "sumy") String city) {
         Weathers weathers = weatherBit.getHttpResponse(city,saveType);
         logger.info("Description weatherBit: " + weatherBit.toString());
-        return weathers;
+        return responseEntity(weathers);
     }
 
     @GetMapping(value = "/list", produces = { "application/json", "application/xml" })

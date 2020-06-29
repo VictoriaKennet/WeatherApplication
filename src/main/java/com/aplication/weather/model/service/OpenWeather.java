@@ -20,7 +20,7 @@ public class OpenWeather implements WeatherAPI {
 
     private final static Logger logger = Logger.getLogger(OpenWeather.class);
 
-    @Value(value = "${api.weather.darksky.name}")
+    @Value(value = "${api.weather.openweather.name}")
     private String name;
     @Value(value = "${api.weather.openweathermap.key}")
     private String key;
@@ -36,8 +36,7 @@ public class OpenWeather implements WeatherAPI {
         try {
             httpResponse = httpClient.execute(httpGet);
             WeatherConverter weatherConverter = new OpenWeatherConverter(name);
-            OpenWeatherPOJO weather;
-            weather = (OpenWeatherPOJO) weatherConverter.toJavaObject(EntityUtils.toString(httpResponse.getEntity()));
+            OpenWeatherPOJO weather = (OpenWeatherPOJO) weatherConverter.toJavaObject(EntityUtils.toString(httpResponse.getEntity()));
             OpenWeatherConverter openWeatherConverter = new OpenWeatherConverter(name);
             new MainConverter().mainConverter(saveType, openWeatherConverter.convert(weather));
             logger.info("Success OpenWeather!");
